@@ -1,0 +1,10 @@
+[
+  {
+    "caption": "BlameHighlighter: Highlight the code that you have edited",
+    "command": "see_my_code"
+  },
+  {
+    "caption": "BlameHighlighter: Clear highlighted blames",
+    "command": "clear_blame_highlights"
+  }
+]
