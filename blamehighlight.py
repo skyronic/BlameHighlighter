@@ -46,7 +46,6 @@ class SeeMyCode(sublime_plugin.TextCommand):
 		view.add_regions('blameGutter', highlighted_regions, "string", "dot", sublime.DRAW_NO_FILL | sublime.DRAW_NO_OUTLINE)
 
 	def run(self, edit):
-		self.settings = sublime.load_settings("BlameHighlight.sublime-settings")
 		fileName = self.view.file_name ()
 		dirName = os.path.dirname(fileName)
 		os.chdir(dirName)
