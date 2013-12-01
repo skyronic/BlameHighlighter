@@ -1,10 +1,3 @@
-//
-// If you are not using Windows, or you have Git installed from a standard source (like apt-get or brew),
-// you can safely close this file.
-// 
-// Otherwise, you need to set the path to "git.exe" manually in the "git_commmand" section. Otherwise
-// BlameHighlighter might not work.
-
 {
 	// path to the git command, like "C:\\Program Files\\Git\\bin\\git.exe" (note the escaping of \)
 	// 
