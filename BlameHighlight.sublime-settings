@@ -1,3 +1,5 @@
 {
-        "author_email": "skyronic@gmail.com"
+	// If 'false', it picks up git from your PATH. Otherwise you can give a direct
+	// path to the git command, like "C:\\Program Files\\Git\\bin\\git.exe" (note the escaping of \)
+    "git_command": false
 }

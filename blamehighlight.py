@@ -1,5 +1,5 @@
 import os
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call
 import sublime, sublime_plugin
 
 def get_stdout_string(command):
@@ -7,10 +7,14 @@ def get_stdout_string(command):
 	output = p.stdout.read().decode("utf-8")
 	return output
 
-def extract_user_lines(directory, fileName, email):
+def get_return_code(command):
+	return call (command)
+
+def extract_user_lines(directory, fileName, email, git_command):
+
 	os.chdir(directory)
 	email = "<%s>" % email
-	output = get_stdout_string(["git", "blame", "--line-porcelain", fileName])
+	output = get_stdout_string([git_command, "blame", "--line-porcelain", fileName])
 
 	lines = output.splitlines()
 
@@ -30,7 +34,6 @@ def extract_user_lines(directory, fileName, email):
 			if lineParts[1] == email:
 				realLines.extend(accumulator)
 			accumulator = []
-
 	return realLines
 
 
@@ -47,15 +50,20 @@ class SeeMyCode(sublime_plugin.TextCommand):
 
 	def run(self, edit):
 		self.settings = sublime.load_settings("BlameHighlight.sublime-settings")
+		git_command = "git"
+		if self.settings.get ("git_command"):
+			git_command = self.settings.get ("git_command")
 		fileName = self.view.file_name ()
 		dirName = os.path.dirname(fileName)
 		os.chdir(dirName)
-		if os.system("git rev-parse") == 0:
-			email = get_stdout_string(["git", "config", "user.email"])
+		if get_return_code([git_command, "rev-parse"]) == 0:
+			email = get_stdout_string([git_command, "config", "user.email"])
 			email = email.splitlines()
 			email = email[0]
-			gitLines = extract_user_lines(dirName, fileName, email)
+			gitLines = extract_user_lines(dirName, fileName, email, git_command)
 			self.highlight_lines(gitLines)
+		else:
+			print ("not a git repo")
 
 class ClearBlameHighlights(sublime_plugin.TextCommand):
 	def run(self, edit):
